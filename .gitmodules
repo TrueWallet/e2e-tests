@@ -1,0 +1,18 @@
+[submodule "account-abstraction"]
+	path = account-abstraction
+	url = https://github.com/eth-infinitism/account-abstraction.git
+	branch = ver0.6.0
+	fetchRecurseSubmodules = true
+	ignore = all
+[submodule "contracts"]
+	path = contracts
+	url = https://github.com/TrueWallet/contracts.git
+	branch = main
+	fetchRecurseSubmodules = true
+	ignore = all
+[submodule "js-sdk"]
+	path = js-sdk
+	url = https://github.com/TrueWallet/js-sdk.git
+	branch = main
+	fetchRecurseSubmodules = true
+	ignore = all
