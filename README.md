@@ -18,13 +18,9 @@ Make sure that you have installed `docker`, `docker compose`, `foundry`, `node` 
 sudo chmod +x start.sh
 ```
 
-### Pull latest repository submodules
+### Pull latest repository and submodules
 ```shell
-git pull --recurse-submodules
-```
-or shortcut
-```shell
-make pull
+git submodule update --init --recursive
 ```
 
 ## Basic commands
@@ -62,4 +58,13 @@ docker-compose down
 or shortcut
 ```shell
 make test
+```
+
+### Update latest repository and submodules
+```shell
+git pull --recurse-submodules
+```
+or shortcut
+```shell
+make pull
 ```
