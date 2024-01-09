@@ -10,7 +10,7 @@ Make sure that you have installed `docker`, `docker compose`, `foundry`, `node` 
 * Install Docker: [installation guide](https://docs.docker.com/engine/install/)
 * Install Docker Compose: [installation guide](https://docs.docker.com/compose/install/)
 * Install Foundry and Forge: [installation guide](https://book.getfoundry.sh/getting-started/installation)
-* Install Node: [installation guide](https://nodejs.org/en/download/package-manager)
+* Install Node (v16): [installation guide](https://nodejs.org/en/download/package-manager)
 * Install Yarn: [installation guide](https://classic.yarnpkg.com/en/docs/install)
 
 ### Change executable file permissions
@@ -58,13 +58,4 @@ docker-compose down
 or shortcut
 ```shell
 make test
-```
-
-### Update latest repository and submodules
-```shell
-git pull --recurse-submodules
-```
-or shortcut
-```shell
-make pull
 ```

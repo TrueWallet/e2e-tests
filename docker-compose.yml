@@ -19,7 +19,7 @@ services:
       - --allow-insecure-unlock
       - --rpc.allow-unprotected-txs
       - --dev
-      - --verbosity=2
+      - --verbosity=3
       - --nodiscover
       - --maxpeers=0
       - --mine
@@ -39,6 +39,8 @@ services:
       - BUILDER_PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
       - CHAIN_ID=1337
       - RPC_PORT=3001
+      - RUST_LOG=debug
+      - RPC_API=eth,debug
     healthcheck:
       test: curl --fail http://localhost:3000/health || exit 1
       interval: 1s

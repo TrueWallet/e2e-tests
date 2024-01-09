@@ -8,9 +8,6 @@ down:
 ps:
 	@docker-compose ps
 
-pull:
-	@git pull --recurse-submodules
-
 test:
 	@$(MAKE) down
 	$(MAKE) up

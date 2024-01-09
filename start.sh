@@ -27,3 +27,20 @@ FACTORY=$(echo "$DEPLOYMENT_STDOUT" | grep -E "==factory addr=0x[a-fA-F0-9]{40}$
 echo "Security module address $SECURITY_MODULE"
 echo "Recovery module address $RECOVERY_MODULE"
 echo "Factory address $FACTORY"
+
+cd ..
+
+cd ./js-sdk &&
+  rm -f .env &&
+  echo "DEFAULT_BUNDLER_URL=http://127.0.0.1:3000" > .env &&
+  echo "DEFAULT_RPC_URL=http://127.0.0.1:8545" >> .env &&
+  echo "FACTORY_ADDRESS=$FACTORY" >> .env &&
+  echo "ENTRYPOINT_ADDRESS=0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789" >> .env &&
+  echo "SECURITY_CONTROL_MODULE_ADDRESS=$SECURITY_MODULE" >> .env &&
+  echo "SOCIAL_RECOVERY_MODULE_ADDRESS=$RECOVERY_MODULE" >> .env &&
+  npm install &&
+  npm run build
+
+cd ..
+
+node tests/deploy.js
