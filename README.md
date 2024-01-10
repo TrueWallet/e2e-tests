@@ -10,7 +10,7 @@ Make sure that you have installed `docker`, `docker compose`, `foundry`, `node` 
 * Install Docker: [installation guide](https://docs.docker.com/engine/install/)
 * Install Docker Compose: [installation guide](https://docs.docker.com/compose/install/)
 * Install Foundry and Forge: [installation guide](https://book.getfoundry.sh/getting-started/installation)
-* Install Node (v16): [installation guide](https://nodejs.org/en/download/package-manager)
+* Install Node: [installation guide](https://nodejs.org/en/download/package-manager)
 * Install Yarn: [installation guide](https://classic.yarnpkg.com/en/docs/install)
 
 ### Change executable file permissions
@@ -25,20 +25,24 @@ git submodule update --init --recursive
 
 ## Basic commands
 
-### Run docker containers
+### Run docker containers and setup prerequisites
 ```shell
-docker-compose up -d
+docker-compose up -d && ./start.sh
 ```
 or shortcut
 ```shell
 make up
 ```
+_It may take longer the first time_
 
 ### Run tests
 ```shell
-./start.sh
+node tests/deploy.js
 ```
-_It may take longer the first time_
+or shortcut
+```shell
+make test
+```
 
 ### Shutdown docker containers
 ```shell
@@ -47,15 +51,4 @@ docker-compose down
 or shortcut
 ```shell
 make down
-```
-
-### Run docker containers, run tests, and then shutdown containers
-```shell
-docker-compose up -d
-./start.sh
-docker-compose down
-```
-or shortcut
-```shell
-make test
 ```
