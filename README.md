@@ -27,7 +27,7 @@ git submodule update --init --recursive
 
 ### Run docker containers and setup prerequisites
 ```shell
-docker-compose up -d && ./start.sh
+docker-compose up -d && ./prepare.sh
 ```
 or shortcut
 ```shell

@@ -9,13 +9,13 @@ cast send --unlocked --from "$DEV_ACCOUNT" --value 10ether $BUNDLER_ACCOUNT > /d
 cast send --unlocked --from "$DEV_ACCOUNT" --value 10ether $DEPLOYER_ACCOUNT > /dev/null
 cast send --unlocked --from "$DEV_ACCOUNT" --value 100ether $TANK_ACCOUNT > /dev/null
 
-cd ./account-abstraction &&
+cd ./deps/account-abstraction &&
   yarn install &&
   yarn deploy --network localhost
 
-cd ..
+cd ../..
 
-cd ./contracts &&
+cd ./deps/contracts &&
   rm -f .env &&
   echo "OWNER=$DEPLOYER_ACCOUNT" > .env &&
   echo "PRIVATE_KEY_TESTNET=$DEPLOYER_PK" >> .env &&
@@ -30,20 +30,17 @@ echo "Security module address $SECURITY_MODULE"
 echo "Recovery module address $RECOVERY_MODULE"
 echo "Factory address $FACTORY"
 
-cd ..
+cd ../..
 
-cd ./js-sdk &&
+cd ./deps/js-sdk &&
   rm -f .env &&
-  echo "DEFAULT_BUNDLER_URL=http://127.0.0.1:3000" > .env &&
-  echo "DEFAULT_RPC_URL=http://127.0.0.1:8545" >> .env &&
   echo "FACTORY_ADDRESS=$FACTORY" >> .env &&
-  echo "ENTRYPOINT_ADDRESS=0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789" >> .env &&
   echo "SECURITY_CONTROL_MODULE_ADDRESS=$SECURITY_MODULE" >> .env &&
   echo "SOCIAL_RECOVERY_MODULE_ADDRESS=$RECOVERY_MODULE" >> .env &&
   npm install &&
   npm run build
 
-cd ..
+cd ../..
 
 cd ./tests &&
   npm install

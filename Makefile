@@ -1,7 +1,7 @@
 up:
 	@docker-compose up -d
 	@docker images -q -f dangling=true | xargs docker rmi -f
-	@./start.sh
+	@./prepare.sh
 
 down:
 	@docker-compose down
