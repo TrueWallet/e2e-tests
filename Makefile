@@ -10,4 +10,4 @@ ps:
 	@docker-compose ps
 
 test:
-	@node tests/deploy.js
+	@cd tests && npm test

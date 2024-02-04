@@ -1,24 +1,41 @@
 #!/bin/bash
 DEV_ACCOUNT=$(cast rpc eth_accounts | tail -n 1 | tr -d '[]"')
 BUNDLER_ACCOUNT=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
-DEPLOYER_ACCOUNT=0x7850cc10aC0Ea9C7d91848a1B4629E686E5Db302
-DEPLOYER_PK=0x800a2034d6af44b31f17e6a4f646f9b29896c40cc7dbc9bbc2d2761725a93e0f
-TANK_ACCOUNT=0x3c70428187DF42b8CF14C496509ADC4e25b7b192
+TRUEWALLET_DEPLOYER_ACCOUNT=0x7850cc10aC0Ea9C7d91848a1B4629E686E5Db302
+TRUEWALLET_DEPLOYER_PK=0x800a2034d6af44b31f17e6a4f646f9b29896c40cc7dbc9bbc2d2761725a93e0f
+# https://github.com/eth-infinitism/account-abstraction/blob/v0.6.0/src/Create2Factory.ts#L13
+ENTRYPOINT_FACTORY_DEPLOYER_ACCOUNT=0x3fab184622dc19b6109349b94811493bf2a45362
+# https://github.com/eth-infinitism/account-abstraction/blob/v0.6.0/src/Create2Factory.ts#L11
+ENTRYPOINT_FACTORY_CONTRACT_ADDRESS=0x4e59b44847b379578588920ca78fbf26c0b4956c
 
-cast send --unlocked --from "$DEV_ACCOUNT" --value 10ether $BUNDLER_ACCOUNT > /dev/null
-cast send --unlocked --from "$DEV_ACCOUNT" --value 10ether $DEPLOYER_ACCOUNT > /dev/null
-cast send --unlocked --from "$DEV_ACCOUNT" --value 100ether $TANK_ACCOUNT > /dev/null
+cast send --unlocked --from "$DEV_ACCOUNT" --value 2ether $BUNDLER_ACCOUNT > /dev/null
+cast send --unlocked --from "$DEV_ACCOUNT" --value 2ether $TRUEWALLET_DEPLOYER_ACCOUNT > /dev/null
+cast send --unlocked --from "$DEV_ACCOUNT" --value 1ether $ENTRYPOINT_FACTORY_DEPLOYER_ACCOUNT > /dev/null
 
+#########
+# For what this workaround. There is no transaction wait here https://github.com/eth-infinitism/account-abstraction/blob/v0.6.0/src/Create2Factory.ts#L105 and as a result, the `account-abstraction` deployment script doesn't wait for the transaction receipt and starts checking if the contract was deployed. So, the first deployment will succeed, but the `account-abstraction` deployment script will fail. The contract address is known and we are waiting for when it will be deployed using the `cast code` and launch the `account-abstraction` deployment script again to complete the EntryPoint deployment
 cd ./deps/account-abstraction &&
   yarn install &&
-  yarn deploy --network localhost
+  AA_DEPLOYMENT_STDOUT=$(yarn deploy --network localhost 2>&1)
+
+if [[ "$AA_DEPLOYMENT_STDOUT" == *"failed to deploy deterministic deployer"* ]]; then
+  get_code=$(cast code $ENTRYPOINT_FACTORY_CONTRACT_ADDRESS)
+  while [ "$get_code" == "0x" ]
+  do
+    get_code=$(cast code $ENTRYPOINT_FACTORY_CONTRACT_ADDRESS)
+  done
+
+  yarn install &&
+    yarn deploy --network localhost
+fi
+#########
 
 cd ../..
 
 cd ./deps/contracts &&
   rm -f .env &&
-  echo "OWNER=$DEPLOYER_ACCOUNT" > .env &&
-  echo "PRIVATE_KEY_TESTNET=$DEPLOYER_PK" >> .env &&
+  echo "OWNER=$TRUEWALLET_DEPLOYER_ACCOUNT" > .env &&
+  echo "PRIVATE_KEY_TESTNET=$TRUEWALLET_DEPLOYER_PK" >> .env &&
   forge install &&
   DEPLOYMENT_STDOUT=$(yarn deployFull:local 2>&1)
 

@@ -24,6 +24,8 @@ services:
       - --maxpeers=0
       - --mine
       - --networkid=1337
+      - --dev.period=2
+      - --miner.gasprice=1
 
   rundler:
     image: truewallet/rundler:latest
