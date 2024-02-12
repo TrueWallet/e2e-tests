@@ -7,7 +7,7 @@ services:
       - "8545:8545"
       - "8546:8546"
     command:
-      - --miner.gaslimit=12000000
+      - --miner.gaslimit=10000000
       - --http
       - --http.api=personal,eth,net,web3,debug
       - --http.vhosts=*
@@ -25,7 +25,6 @@ services:
       - --mine
       - --networkid=1337
       - --dev.period=2
-      - --miner.gasprice=1
 
   rundler:
     image: truewallet/rundler:latest
@@ -44,7 +43,7 @@ services:
       - RUST_LOG=debug
       - RPC_API=eth,debug
     healthcheck:
-      test: curl --fail http://localhost:3000/health || exit 1
+      test: curl --fail http://localhost:3001/health || exit 1
       interval: 1s
       timeout: 1s
       retries: 60

@@ -5,7 +5,9 @@
 ## Requirements
 
 ### Install dependencies
-Make sure that you have installed `docker`, `docker compose`, `foundry`, `node` version 18 or below, and `yarn`.
+Make sure that you have installed `docker`, `docker compose`, `foundry`, `node`, and `yarn`.
+
+**Pay attention: Node requires v18.**
 
 * Install Docker: [installation guide](https://docs.docker.com/engine/install/)
 * Install Docker Compose: [installation guide](https://docs.docker.com/compose/install/)
@@ -15,7 +17,7 @@ Make sure that you have installed `docker`, `docker compose`, `foundry`, `node` 
 
 ### Change executable file permissions
 ```shell
-sudo chmod +x start.sh
+chmod +x start.sh
 ```
 
 ### Pull latest repository and submodules

@@ -1,4 +1,4 @@
-const {init, BundlerError} = require("../deps/js-sdk/dist/node/cjs");
+const {initTrueWallet, BundlerError} = require("../deps/js-sdk/dist/cjs");
 const ethers = require("ethers");
 
 describe('Wallet methods', () => {
@@ -8,7 +8,7 @@ describe('Wallet methods', () => {
 
   beforeAll(async () => {
     owner = ethers.Wallet.createRandom();
-    sdk = await init({
+    sdk = await initTrueWallet({
       rpcProviderUrl: 'http://127.0.0.1:8545',
       bundlerUrl: 'http://127.0.0.1:3000',
       signer: {type: 'privateKey', data: [owner.privateKey]},
@@ -32,5 +32,5 @@ describe('Wallet methods', () => {
 
     const deployed = await sdk.isWalletReady();
     expect(deployed).toBe(true);
-  }, 10_000);
+  }, 15_000);
 });

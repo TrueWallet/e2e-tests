@@ -37,7 +37,7 @@ cd ./deps/contracts &&
   echo "OWNER=$TRUEWALLET_DEPLOYER_ACCOUNT" > .env &&
   echo "PRIVATE_KEY_TESTNET=$TRUEWALLET_DEPLOYER_PK" >> .env &&
   forge install &&
-  DEPLOYMENT_STDOUT=$(yarn deployFull:local 2>&1)
+  DEPLOYMENT_STDOUT=$(yarn deployfull:local 2>&1)
 
 SECURITY_MODULE=$(echo "$DEPLOYMENT_STDOUT" | grep -E "==securityModule addr=0x[a-fA-F0-9]{40}$" | grep -oE "[a-fxA-F0-9]{42}$")
 RECOVERY_MODULE=$(echo "$DEPLOYMENT_STDOUT" | grep -E "==recoveryModule addr=0x[a-fA-F0-9]{40}$" | grep -oE "[a-fxA-F0-9]{42}$")
@@ -51,9 +51,9 @@ cd ../..
 
 cd ./deps/js-sdk &&
   rm -f .env &&
-  echo "FACTORY_ADDRESS=$FACTORY" >> .env &&
-  echo "SECURITY_CONTROL_MODULE_ADDRESS=$SECURITY_MODULE" >> .env &&
-  echo "SOCIAL_RECOVERY_MODULE_ADDRESS=$RECOVERY_MODULE" >> .env &&
+  echo "FACTORY=$FACTORY" >> .env &&
+  echo "SECURITY_CONTROL_MODULE=$SECURITY_MODULE" >> .env &&
+  echo "SOCIAL_RECOVERY_MODULE=$RECOVERY_MODULE" >> .env &&
   npm install &&
   npm run build
 
