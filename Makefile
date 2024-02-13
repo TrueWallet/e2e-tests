@@ -9,5 +9,12 @@ down:
 ps:
 	@docker-compose ps
 
+# If the first argument is "test"...
+ifeq (test,$(firstword $(MAKECMDGOALS)))
+  # use the rest as arguments for "test"
+  RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  # ...and turn them into do-nothing targets
+  $(eval $(RUN_ARGS):;@:)
+endif
 test:
-	@cd tests && npm test
+	@cd tests && npx jest -t "$(RUN_ARGS)"

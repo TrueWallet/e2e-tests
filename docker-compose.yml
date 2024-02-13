@@ -7,7 +7,7 @@ services:
       - "8545:8545"
       - "8546:8546"
     command:
-      - --miner.gaslimit=10000000
+      - --miner.gaslimit=12000000
       - --http
       - --http.api=personal,eth,net,web3,debug
       - --http.vhosts=*
@@ -27,7 +27,7 @@ services:
       - --dev.period=2
 
   rundler:
-    image: truewallet/rundler:latest
+    image: truewallet/rundler:cd4f1af
     depends_on:
       - geth
     ports:

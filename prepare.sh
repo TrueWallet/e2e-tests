@@ -61,5 +61,3 @@ cd ../..
 
 cd ./tests &&
   npm install
-
-cd ..

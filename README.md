@@ -39,11 +39,17 @@ _It may take longer the first time_
 
 ### Run tests
 ```shell
-node tests/deploy.js
+cd tests
+npm test
 ```
 or shortcut
 ```shell
 make test
+```
+
+or shortcut for specific test, for example "send when deployed"
+```shell
+make test send when deployed
 ```
 
 ### Shutdown docker containers
