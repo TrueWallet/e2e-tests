@@ -24,36 +24,58 @@ services:
       - --maxpeers=0
       - --mine
       - --networkid=1337
-      - --dev.period=2
-
-  rundler:
-    image: truewallet/rundler:cd4f1af
-    depends_on:
-      - geth
-    ports:
-      - "8080:8080"
-      - "3001:3001"
-    environment:
-      - ENTRY_POINTS=0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789
-      - NODE_HTTP=http://geth:8545
-      # 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
-      - BUILDER_PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
-      - CHAIN_ID=1337
-      - RPC_PORT=3001
-      - RUST_LOG=debug
-      - RPC_API=eth,debug
+#      - --dev.period=2  # for rundler
     healthcheck:
-      test: curl --fail http://localhost:3001/health || exit 1
+      test: ["CMD-SHELL", " netstat -an | grep -q 8545"]
       interval: 1s
       timeout: 1s
-      retries: 60
-      start_period: 10s
 
-  nginx:
-    image: nginx:1.25.3-alpine
+#  rundler:
+#    image: truewallet/rundler:0.1
+#    command: node
+#    depends_on:
+#      - geth
+#    ports:
+#      - "8080:8080"
+#      - "3001:3001"
+#    environment:
+#      - ENTRY_POINTS=0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789
+#      - NODE_HTTP=http://geth:8545
+#      # 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+#      - BUILDER_PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+#      - CHAIN_ID=1337
+#      - RPC_PORT=3001
+#      - RUST_LOG=debug
+#      - RPC_API=eth,debug
+#      - PRIORITY_FEE_MODE_KIND=base_fee_percent
+#    healthcheck:
+#      test: curl --fail http://localhost:3001/health || exit 1
+#      interval: 1s
+#      timeout: 1s
+#      retries: 60
+#      start_period: 10s
+
+  stackup-bundler:
+    image: stackupwallet/stackup-bundler:v0.6.44
+    command: /app/stackup-bundler start --mode private
     depends_on:
-      - rundler
+      geth:
+        condition: service_healthy
     ports:
       - "3000:3000"
-    volumes:
-      - ./etc/nginx:/etc/nginx/templates
+    environment:
+      - ERC4337_BUNDLER_ETH_CLIENT_URL=http://geth:8545
+      - ERC4337_BUNDLER_PRIVATE_KEY=ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+      - ERC4337_BUNDLER_PORT=3000
+      - ERC4337_BUNDLER_SUPPORTED_ENTRY_POINTS=0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789
+
+  # https://github.com/alchemyplatform/rundler/issues/579
+  # nginx for rundler
+#  nginx:
+#    image: nginx:1.25.3-alpine
+#    depends_on:
+#      - rundler
+#    ports:
+#      - "3000:3000"
+#    volumes:
+#      - ./etc/nginx:/etc/nginx/templates

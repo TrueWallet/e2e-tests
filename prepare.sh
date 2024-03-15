@@ -37,15 +37,21 @@ cd ./deps/contracts &&
   echo "OWNER=$TRUEWALLET_DEPLOYER_ACCOUNT" > .env &&
   echo "PRIVATE_KEY_TESTNET=$TRUEWALLET_DEPLOYER_PK" >> .env &&
   forge install &&
-  DEPLOYMENT_STDOUT=$(yarn deployfull:local 2>&1)
+  DEPLOYMENT_STDOUT=$(yarn deploy:local 2>&1)
 
 SECURITY_MODULE=$(echo "$DEPLOYMENT_STDOUT" | grep -E "==securityModule addr=0x[a-fA-F0-9]{40}$" | grep -oE "[a-fxA-F0-9]{42}$")
 RECOVERY_MODULE=$(echo "$DEPLOYMENT_STDOUT" | grep -E "==recoveryModule addr=0x[a-fA-F0-9]{40}$" | grep -oE "[a-fxA-F0-9]{42}$")
 FACTORY=$(echo "$DEPLOYMENT_STDOUT" | grep -E "==factory addr=0x[a-fA-F0-9]{40}$" | grep -oE "[a-fxA-F0-9]{42}$")
+ERC20=$(echo "$DEPLOYMENT_STDOUT" | grep -E "==ERC20 addr=0x[a-fA-F0-9]{40}$" | grep -oE "[a-fxA-F0-9]{42}$")
+ERC721=$(echo "$DEPLOYMENT_STDOUT" | grep -E "==ERC721 addr=0x[a-fA-F0-9]{40}$" | grep -oE "[a-fxA-F0-9]{42}$")
+ERC1155=$(echo "$DEPLOYMENT_STDOUT" | grep -E "==ERC1155 addr=0x[a-fA-F0-9]{40}$" | grep -oE "[a-fxA-F0-9]{42}$")
 
 echo "Security module address $SECURITY_MODULE"
 echo "Recovery module address $RECOVERY_MODULE"
 echo "Factory address $FACTORY"
+echo "ERC20 address $ERC20"
+echo "ERC721 address $ERC721"
+echo "ERC1155 address $ERC1155"
 
 cd ../..
 
@@ -60,4 +66,8 @@ cd ./deps/js-sdk &&
 cd ../..
 
 cd ./tests &&
+  rm -f .env &&
+  echo "ERC20=$ERC20" >> .env &&
+  echo "ERC721=$ERC721" >> .env &&
+  echo "ERC1155=$ERC1155" >> .env &&
   npm install

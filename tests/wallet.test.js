@@ -1,4 +1,4 @@
-const {initTrueWallet, BundlerError, TrueWalletError, TrueWalletErrorCodes} = require("../deps/js-sdk/dist/cjs");
+const {initTrueWallet, BundlerError, TrueWalletError, TrueWalletErrorCodes} = require("../deps/js-sdk/dist/sdk.cjs");
 const ethers = require("ethers");
 
 describe('Wallet methods', () => {
