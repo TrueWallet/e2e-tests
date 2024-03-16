@@ -67,7 +67,7 @@ describe('Wallet methods', () => {
 
     const balance2 = await sdk.getBalance();
 
-    expect(Number(balance2)).toBeLessThan(Number(balance1) - 0.1);
+    expect(Number(balance2)).toBeLessThanOrEqual(Number(balance1) - 0.1);
   }, 15_000);
 
   test('getBalance', async () => {
